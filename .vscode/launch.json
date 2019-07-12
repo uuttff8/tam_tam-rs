@@ -1,0 +1,101 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'tam_tam_bot'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "tam_tam_bot",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'get_info'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=get_info",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "get_info",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'get_info'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=get_info",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "get_info",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'get_chats'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=get_chats",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "get_chats",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'get_chats'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=get_chats",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "get_chats",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
