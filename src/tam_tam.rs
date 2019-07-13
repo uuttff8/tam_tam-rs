@@ -109,7 +109,27 @@ impl TamTam {
 
     // MARK: - Messages
 
+    //TODO(uuttff8): implement
+    fn get_messages(&self) {}
+
+    fn send_message(&self) {}
+    
+    fn edit_message(&self) {}
+    
+    fn delete_message(&self) {}
+    
+    fn answer_on_callback(&self) {}
+    
     // MARK: - Subscriptions
+    
+    //TODO(uuttff8): implement
+    fn get_subscription(&self) {}
+
+    fn subscribe(&self) {}
+
+    fn unsubscribe(&self) {}
+
+    fn get_updates(&self) {}
 
     // MARK: - Upload
 
