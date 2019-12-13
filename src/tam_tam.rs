@@ -1,7 +1,11 @@
+#![allow(dead_code)]
 use {
-    reqwest::{Client, Method, RequestBuilder, Response, Result},
+    reqwest::{Client, Method, RequestBuilder, Response},
     serde::Deserialize,
+    std::io,
 };
+
+use crate::models::bot::TTBot;
 
 #[derive(Deserialize, Debug)]
 pub struct ChatJson {
@@ -34,33 +38,37 @@ impl TamTam {
         }
     }
 
-    // MARK: - Bots info
-
-    // TODO(uuttff8): Come up with new fn name
-    pub fn get_info(&self) -> Result<Response> {
-        Ok(self.request(Method::GET, "me")?.send()?)
+    pub fn get_info(&self) -> Result<TTBot, Box<dyn std::error::Error>> {
+        let request: TTBot = self.request(Method::GET, "me")?.send()?.json()?;
+        Ok(request)
     }
 
-    pub fn change_info(&self) {
+    pub fn change_bot_info(&self) -> Result<(), io::Error> {
         let full_link = format!("{}/me", self.url);
         self.client
             .request(Method::PATCH, &full_link)
             .query(&[("access_token", self.access_token.clone())]);
+
+        Ok(())
     }
 
-    // MARK: - Chats
+    pub fn edit_access_token(mut self, access_token: String) -> TamTam {
+        self.access_token = access_token;
+        self
+    }
 
-    pub fn get_all_chats(&self) -> Result<Response> {
+    // Chats
+    pub fn get_all_chats(&self) -> reqwest::Result<Response> {
         Ok(self.request(Method::GET, "chats")?.send()?)
     }
 
-    pub fn get_chat_by_id(&self, id: usize) -> Result<Response> {
+    pub fn get_chat_by_id(&self, id: usize) -> reqwest::Result<Response> {
         let path = format!("chats/{}", id.to_string());
         Ok(self.request(Method::GET, &path)?.send()?)
     }
 
     // TODO(uuttff8): support for title
-    pub fn edit_chat_info(&self, id: usize, title: &str) -> Result<Response> {
+    pub fn edit_chat_info(&self, id: usize, title: &str) -> reqwest::Result<Response> {
         let path = format!("chats/{}", id.to_string());
         let req = self
             .request(Method::PATCH, &path)?
@@ -70,7 +78,7 @@ impl TamTam {
         Ok(req)
     }
 
-    pub fn send_action(&self, id: usize, action: SenderAction) -> Result<Response> {
+    pub fn send_action(&self, id: usize, action: SenderAction) -> reqwest::Result<Response> {
         let path = format!("chats/{}", id.to_string());
         let req: RequestBuilder = self
             .request(Method::PATCH, &path)?
@@ -79,19 +87,19 @@ impl TamTam {
         Ok(req.send()?)
     }
 
-    pub fn get_members(&self, id: usize) -> Result<Response> {
+    pub fn get_members(&self, id: usize) -> reqwest::Result<Response> {
         let path = format!("chats/{}/members", id.to_string());
         let req: RequestBuilder = self.request(Method::PATCH, &path)?;
         Ok(req.send()?)
     }
 
-    pub fn leave_chat(&self, id: usize) -> Result<Response> {
+    pub fn leave_chat(&self, id: usize) -> reqwest::Result<Response> {
         let path: String = format!("chats/{}/members/me", id.to_string());
         let req: RequestBuilder = self.request(Method::DELETE, &path)?;
         Ok(req.send()?)
     }
 
-    pub fn add_members(&self, id: usize, user_ids: Vec<i64>) -> Result<Response> {
+    pub fn add_members(&self, id: usize, user_ids: Vec<i64>) -> reqwest::Result<Response> {
         let path: String = format!("chats/{}/members", id.to_string());
         let req: RequestBuilder = self
             .request(Method::POST, &path)?
@@ -99,7 +107,7 @@ impl TamTam {
         Ok(req.send()?)
     }
 
-    pub fn remove_member(&self, id: usize, user_id: i64) -> Result<Response> {
+    pub fn remove_member(&self, id: usize, user_id: i64) -> reqwest::Result<Response> {
         let path: String = format!("chats/{}/members", id.to_string());
         let req: RequestBuilder = self
             .request(Method::DELETE, &path)?
@@ -110,30 +118,43 @@ impl TamTam {
     // MARK: - Messages
 
     //TODO(uuttff8): implement
-    fn get_messages(&self) {}
+    fn get_messages(&self) {
+        unimplemented!();
+    }
 
-    fn send_message(&self) {}
-    
-    fn edit_message(&self) {}
-    
-    fn delete_message(&self) {}
-    
-    fn answer_on_callback(&self) {}
-    
+    fn send_message(&self) {
+        unimplemented!();
+    }
+    fn edit_message(&self) {
+        unimplemented!();
+    }
+    fn delete_message(&self) {
+        unimplemented!();
+    }
+    fn answer_on_callback(&self) {
+        unimplemented!();
+    }
     // MARK: - Subscriptions
-    
     //TODO(uuttff8): implement
-    fn get_subscription(&self) {}
+    fn get_subscription(&self) {
+        unimplemented!();
+    }
 
-    fn subscribe(&self) {}
+    fn subscribe(&self) {
+        unimplemented!();
+    }
 
-    fn unsubscribe(&self) {}
+    fn unsubscribe(&self) {
+        unimplemented!();
+    }
 
-    fn get_updates(&self) {}
+    fn get_updates(&self) {
+        unimplemented!();
+    }
 
     // MARK: - Upload
 
-    pub fn uploads(&self, r#type: UploadType) -> Result<Response> {
+    pub fn uploads(&self, r#type: UploadType) -> reqwest::Result<Response> {
         let path: String = format!("uploads");
         let req: RequestBuilder = self
             .request(Method::POST, &path)?
@@ -142,7 +163,7 @@ impl TamTam {
         Ok(req.send()?)
     }
 
-    fn request(&self, method: Method, path: &str) -> Result<RequestBuilder> {
+    fn request(&self, method: Method, path: &str) -> reqwest::Result<RequestBuilder> {
         let full_link = format!("{}/{}", self.url, path);
         let resp = self
             .client
