@@ -1,5 +1,3 @@
-pub mod tam_tam;
-pub mod models;
+#![allow(dead_code)]
 
-pub use tam_tam::TamTam;
-//use self::error::Result;
+pub mod tam_tam;

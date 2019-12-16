@@ -1,4 +1,4 @@
-use tam_tam_bot::{models::bot::TTBot, TamTam};
+use tam_tam_bot::tam_tam::{bot::TTBot, TamTam};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let bot = TamTam::new(String::from("z6QUEUsazV-8ic8eXpmBfB5cVrMB3Reo6Owj4tU9BGQ"));

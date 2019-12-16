@@ -1,4 +1,7 @@
+use super::tam_tam::TamTam;
+
 use serde::{Deserialize, Serialize};
+use reqwest::Method;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TTBot {
@@ -27,4 +30,22 @@ pub struct TTPhoto {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct PhotoToken {
     token: Option<String>,
+}
+
+impl TamTam {
+    pub fn get_bot_info(&self) -> Result<TTBot, Box<dyn std::error::Error>> {
+        let request: TTBot = self.request(Method::GET, "me")?.send()?.json()?;
+        Ok(request)
+    }
+
+    pub fn edit_bot_info(&self, bot: TTBot) -> Result<(), reqwest::Error> {
+        let full_link = format!("{}/me", self.url);
+        self.client
+            .request(Method::PATCH, &full_link)
+            .json(&bot)
+            .query(&[("access_token", &self.access_token)])
+            .send()?;
+
+        Ok(())
+    }
 }
