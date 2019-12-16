@@ -34,14 +34,12 @@ pub struct PhotoToken {
 
 impl TamTam {
     pub fn get_bot_info(&self) -> Result<TTBot, Box<dyn std::error::Error>> {
-        let request: TTBot = self.request(Method::GET, "me")?.send()?.json()?;
+        let request: TTBot = self.request(Method::GET, "me").send()?.json()?;
         Ok(request)
     }
 
     pub fn edit_bot_info(&self, bot: TTBot) -> Result<(), reqwest::Error> {
-        let full_link = format!("{}/me", self.url);
-        self.client
-            .request(Method::PATCH, &full_link)
+        self.request(Method::PATCH, "me")
             .json(&bot)
             .query(&[("access_token", &self.access_token)])
             .send()?;

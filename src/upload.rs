@@ -24,9 +24,8 @@ impl UploadType {
 
 impl TamTam {
     pub fn uploads(&self, r#type: UploadType) -> reqwest::Result<Response> {
-        let path: String = format!("uploads");
         let req: RequestBuilder = self
-            .request(Method::POST, &path)?
+            .request(Method::POST, "uploads")
             .header(reqwest::header::CONTENT_TYPE, "multipart/form-data")
             .query(&[("type", r#type.value())]);
         Ok(req.send()?)
