@@ -1,6 +1,8 @@
+#![allow(dead_code)]
+
 pub mod tam_tam;
-
-mod models;
-
-pub use tam_tam::TamTam;
-//use self::error::Result;
+pub mod bot;
+pub mod chats;
+pub mod messages;
+pub mod subscriptions;
+pub mod upload;
