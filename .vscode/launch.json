@@ -44,6 +44,24 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Debug example 'get_bot_info'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=get_bot_info",
+                    "--package=tam_tam_bot"
+                ],
+                "filter": {
+                    "name": "get_bot_info",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug unit tests in example 'get_info'",
             "cargo": {
                 "args": [

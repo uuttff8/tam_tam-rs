@@ -1,6 +1,5 @@
 pub mod tam_tam;
-
-mod models;
+pub mod models;
 
 pub use tam_tam::TamTam;
 //use self::error::Result;

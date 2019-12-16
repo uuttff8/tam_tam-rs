@@ -2,25 +2,9 @@
 use {
     reqwest::{Client, Method, RequestBuilder, Response},
     serde::Deserialize,
-    std::io,
 };
 
 use crate::models::bot::TTBot;
-
-#[derive(Deserialize, Debug)]
-pub struct ChatJson {
-    pub chats: Vec<ChatJsonArray>,
-}
-
-#[derive(Deserialize, Debug)]
-pub struct ChatJsonArray {
-    pub chat_id: usize,
-    pub r#type: String,
-    pub status: String,
-    pub last_event_time: usize,
-    pub participants_count: usize,
-    pub is_public: bool,
-}
 
 #[derive(Debug)]
 pub struct TamTam {
@@ -38,16 +22,18 @@ impl TamTam {
         }
     }
 
-    pub fn get_info(&self) -> Result<TTBot, Box<dyn std::error::Error>> {
+    pub fn get_bot_info(&self) -> Result<TTBot, Box<dyn std::error::Error>> {
         let request: TTBot = self.request(Method::GET, "me")?.send()?.json()?;
         Ok(request)
     }
 
-    pub fn change_bot_info(&self) -> Result<(), io::Error> {
+    pub fn edit_bot_info(&self, bot: TTBot) -> Result<(), reqwest::Error> {
         let full_link = format!("{}/me", self.url);
         self.client
             .request(Method::PATCH, &full_link)
-            .query(&[("access_token", self.access_token.clone())]);
+            .json(&bot)
+            .query(&[("access_token", &self.access_token)])
+            .send()?;
 
         Ok(())
     }
